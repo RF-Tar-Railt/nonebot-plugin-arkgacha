@@ -5,12 +5,13 @@ from nonebot.adapters import Event
 from nonebot.plugin import PluginMetadata
 from arclet.alconna import Alconna, Args, CommandMeta
 from arknights_toolkit.gacha import ArknightsGacha, GachaUser
-require("nonebot_plugin_arlconna")
+
+require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_saa")
 
 from nonebot_plugin_alconna import on_alconna, AlcMatches
-import nonebot_plugin_localstore as store
+from nonebot_plugin_localstore import get_cache_file, get_data_file
 from nonebot_plugin_saa import MessageFactory, Image
 
 from .config import Config
@@ -20,8 +21,8 @@ global_config = driver.config
 config = Config.parse_obj(global_config)
 
 __plugin_meta__ = PluginMetadata(
-    name="方舟抽卡",
-    description="明日方舟抽卡模拟器",
+    name="明日方舟抽卡模拟",
+    description="明模拟日方舟抽卡功能，支持模拟十连",
     usage="方舟抽卡 / 方舟十连",
     extra={
         "author": "RF-Tar-Railt",
@@ -30,8 +31,8 @@ __plugin_meta__ = PluginMetadata(
 )
 
 
-gacha = ArknightsGacha(config.arkgacha_pool_file or store.get_data_file("arkgacha", "pool.json"))
-user_cache_file = store.get_cache_file("arkgacha", "user.json")
+gacha = ArknightsGacha(config.arkgacha_pool_file or get_data_file("arkgacha", "pool.json"))
+user_cache_file = get_cache_file("arkgacha", "user.json")
 if not user_cache_file.exists():
     userdata = {}
 else:
