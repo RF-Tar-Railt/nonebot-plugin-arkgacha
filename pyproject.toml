@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-arkgacha"
-version = "0.1.0"
+version = "0.1.1"
 description = "Plugin for Arknights gacha, support multi platform"
 authors = [
     {name = "RF-Tar-Railt", email = "3165388245@qq.com"},
@@ -9,7 +9,7 @@ dependencies = [
     "nonebot2>=2.0.0rc4",
     "nonebot-plugin-alconna>=0.4.1",
     "nonebot-plugin-send-anything-anywhere>=0.2.4",
-    "arknights-toolkit>=0.5.0",
+    "arknights-toolkit>=0.5.1",
     "nonebot-plugin-localstore>=0.4.1",
 ]
 requires-python = ">=3.8"
