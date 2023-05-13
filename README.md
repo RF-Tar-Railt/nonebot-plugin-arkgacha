@@ -44,7 +44,7 @@ arkkit init
 
 - ARKGACHA_POOL_FILE: 抽卡池文件路径, 不填则使用 [`localstore`](https://github.com/nonebot/plugin-localstore) 保存抽卡池
 - ARKGACHA_MAX: 抽卡最大次数, 默认为 300
-
+- ARKGACHA_PURE_TEXT: 是否使用纯文本, 默认为 False (十连模拟必须使用图片)
 ## 使用方法
 
 指令如下: 

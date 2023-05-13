@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-arkgacha"
-version = "0.1.4"
+version = "0.1.5"
 description = "Plugin for Arknights gacha, support multi platform"
 authors = [
     {name = "RF-Tar-Railt", email = "3165388245@qq.com"},

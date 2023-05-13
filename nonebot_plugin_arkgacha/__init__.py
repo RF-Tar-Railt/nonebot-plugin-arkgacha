@@ -99,30 +99,35 @@ async def _(event: Event, count: Match[int] = AlconnaMatch("count")):
     else:
         user = GachaUser(**userdata[session])
     count = min(max(int(count.result), 1), config.arkgacha_max)
-
-    img = gacha.gacha_with_img(user, count)
-    try:
-        await MessageFactory(Image(img)).send()
-    except RuntimeError:
-        data = gacha.gacha(user, count)
-        get_six = {}
-        get_five = {}
-        four_count = 0
-        for ten in data:
-            for res in ten:
-                if res.rarity == 6:
-                    get_six[res.name] = get_six.get(res.name, 0) + 1
-                elif res.rarity == 5:
-                    get_five[res.name] = get_five.get(res.name, 0) + 1
-                elif res.rarity == 4:
-                    four_count += 1
-        await gacha_regex.send(
-            f"六星角色：\n" +
-            "\n".join(f"{i} x{get_six[i]}" for i in get_six) +
-            "\n五星角色：\n" +
-            "\n".join(f"{i} x{get_five[i]}" for i in get_five) +
-            f"\n四星角色：{four_count}个"
-        )
+    data = gacha.gacha(user, count)
+    get_six = {}
+    get_five = {}
+    four_count = 0
+    for ten in data:
+        for res in ten:
+            if res.rarity == 6:
+                get_six[res.name] = get_six.get(res.name, 0) + 1
+            elif res.rarity == 5:
+                get_five[res.name] = get_five.get(res.name, 0) + 1
+            elif res.rarity == 4:
+                four_count += 1
+    text = (
+        f"抽卡次数: {count}\n"
+        f"六星角色：\n" +
+        "\n".join(f"{i} x{get_six[i]}" for i in get_six) +
+        "\n五星角色：\n" +
+        "\n".join(f"{i} x{get_five[i]}" for i in get_five) +
+        "\n四星角色：\n" +
+        f"共{four_count}个四星"
+    )
+    if config.arkgacha_pure_text:
+        await gacha_regex.send(text)
+    else:
+        img = gacha.create_image(user, data, count, True)
+        try:
+            await MessageFactory(Image(img)).send()
+        except RuntimeError:
+            await gacha_regex.send(text)
     userdata[session] = asdict(user)
     await gacha_regex.finish()
 
