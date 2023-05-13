@@ -15,10 +15,12 @@ from nonebot.plugin import PluginMetadata
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_saa")
+require("nonebot_plugin_apscheduler")
 
 from nonebot_plugin_alconna import AlconnaMatch, Match, on_alconna
 from nonebot_plugin_localstore import get_cache_file, get_data_file
 from nonebot_plugin_saa import Image, MessageFactory, Text
+from nonebot_plugin_apscheduler import scheduler
 
 from .config import Config
 
@@ -63,6 +65,11 @@ gacha_regex = on_alconna(
 simulate_regex = on_fullmatch("方舟十连", priority=16, block=True)
 help_regex = on_fullmatch("方舟抽卡帮助", priority=16, block=True)
 update_regex = on_fullmatch("方舟卡池更新", priority=16, block=True)
+
+
+@scheduler.scheduled_job("cron", hour=16)
+async def update_pool():
+    await gacha.update()
 
 
 @driver.on_startup
