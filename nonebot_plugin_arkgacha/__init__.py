@@ -66,10 +66,10 @@ simulate_regex = on_fullmatch("方舟十连", priority=16, block=True)
 help_regex = on_fullmatch("方舟抽卡帮助", priority=16, block=True)
 update_regex = on_fullmatch("方舟卡池更新", priority=16, block=True)
 
-
-@scheduler.scheduled_job("cron", hour=16)
-async def update_pool():
-    await gacha.update()
+if config.arkgacha_auto_update:
+    @scheduler.scheduled_job("cron", hour=16)
+    async def update_pool():
+        await gacha.update()
 
 
 @driver.on_startup
