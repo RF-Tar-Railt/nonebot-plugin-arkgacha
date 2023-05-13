@@ -10,7 +10,7 @@ require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_saa")
 
-from nonebot_plugin_alconna import on_alconna, AlcMatches
+from nonebot_plugin_alconna import on_alconna, AlconnaMatch, Match
 from nonebot_plugin_localstore import get_cache_file, get_data_file
 from nonebot_plugin_saa import MessageFactory, Image
 
@@ -51,12 +51,12 @@ gacha_regex = on_alconna(
     ),
     auto_send_output=True,
     comp_config={'timeout': 30},
-    priority=16,
+    priority=15,
     block=True
 )
-simulate_regex = on_fullmatch(r"方舟十连", priority=16, block=True)
-help_regex = on_fullmatch(r"方舟抽卡帮助", priority=16, block=True)
-update_regex = on_fullmatch(r"方舟卡池更新", priority=16, block=True)
+simulate_regex = on_fullmatch("方舟十连", priority=16, block=True)
+help_regex = on_fullmatch("方舟抽卡帮助", priority=16, block=True)
+update_regex = on_fullmatch("方舟卡池更新", priority=16, block=True)
 
 
 @driver.on_shutdown
@@ -91,14 +91,14 @@ async def _():
 
 
 @gacha_regex.handle()
-async def _(event: Event, arp: AlcMatches):
+async def _(event: Event, count: Match[int] = AlconnaMatch("count")):
     session = event.get_user_id()
     if session not in userdata:
         user = GachaUser()
         userdata[session] = asdict(user)
     else:
         user = GachaUser(**userdata[session])
-    count = min(max(int(arp.count), 1), config.arkgacha_max)
+    count = min(max(int(count.result), 1), config.arkgacha_max)
 
     img = gacha.gacha_with_img(user, count)
     try:
