@@ -12,6 +12,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "apscheduler"
+version = "3.10.1"
+requires_python = ">=3.6"
+summary = "In-process task scheduler with Cron-like capabilities"
+dependencies = [
+    "pytz",
+    "setuptools>=0.7",
+    "six>=1.4.0",
+    "tzlocal!=3.*,>=2.0",
+]
+
+[[package]]
 name = "arclet-alconna"
 version = "1.7.2"
 requires_python = ">=3.8"
@@ -34,7 +46,7 @@ dependencies = [
 
 [[package]]
 name = "arknights-toolkit"
-version = "0.5.0"
+version = "0.5.3"
 requires_python = ">=3.8"
 summary = "Arknights-related Toolkit"
 dependencies = [
@@ -46,6 +58,12 @@ dependencies = [
     "matplotlib>=3.6.2",
     "xlsxwriter>=3.0.3",
 ]
+
+[[package]]
+name = "backports-zoneinfo"
+version = "0.2.1"
+requires_python = ">=3.6"
+summary = "Backport of the standard library zoneinfo module"
 
 [[package]]
 name = "certifi"
@@ -183,7 +201,7 @@ summary = "multidict implementation"
 
 [[package]]
 name = "nepattern"
-version = "0.5.6"
+version = "0.5.7"
 requires_python = ">=3.8"
 summary = "a complex pattern, support typing"
 dependencies = [
@@ -193,13 +211,23 @@ dependencies = [
 
 [[package]]
 name = "nonebot-plugin-alconna"
-version = "0.4.1"
+version = "0.4.2"
 requires_python = ">=3.8"
 summary = "Alconna Adapter for Nonebot"
 dependencies = [
     "arclet-alconna-tools<0.7.0,>=0.6.0",
     "arclet-alconna<2.0.0,>=1.7.0",
     "nonebot2>=2.0.0rc4",
+]
+
+[[package]]
+name = "nonebot-plugin-apscheduler"
+version = "0.2.0"
+requires_python = ">=3.8,<4.0"
+summary = "APScheduler Support for NoneBot2"
+dependencies = [
+    "apscheduler<4.0.0,>=3.7.0",
+    "nonebot2<3.0.0,>=2.0.0-rc.1",
 ]
 
 [[package]]
@@ -302,6 +330,27 @@ requires_python = ">=3.8"
 summary = "Read key-value pairs from a .env file and set them as environment variables"
 
 [[package]]
+name = "pytz"
+version = "2023.3"
+summary = "World timezone definitions, modern and historical"
+
+[[package]]
+name = "pytz-deprecation-shim"
+version = "0.1.0.post0"
+requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
+summary = "Shims to make deprecation of pytz easier"
+dependencies = [
+    "backports-zoneinfo; python_version >= \"3.6\" and python_version < \"3.9\"",
+    "tzdata; python_version >= \"3.6\"",
+]
+
+[[package]]
+name = "setuptools"
+version = "67.7.2"
+requires_python = ">=3.7"
+summary = "Easily download, build, install, upgrade, and uninstall Python packages"
+
+[[package]]
 name = "six"
 version = "1.16.0"
 requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
@@ -340,6 +389,23 @@ requires_python = ">=3.7"
 summary = "Backported and Experimental Type Hints for Python 3.7+"
 
 [[package]]
+name = "tzdata"
+version = "2023.3"
+requires_python = ">=2"
+summary = "Provider of IANA time zone data"
+
+[[package]]
+name = "tzlocal"
+version = "4.3"
+requires_python = ">=3.7"
+summary = "tzinfo object for the local timezone"
+dependencies = [
+    "backports-zoneinfo; python_version < \"3.9\"",
+    "pytz-deprecation-shim",
+    "tzdata; platform_system == \"Windows\"",
+]
+
+[[package]]
 name = "win32-setctime"
 version = "1.1.0"
 requires_python = ">=3.5"
@@ -370,12 +436,16 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 [metadata]
 lock_version = "4.2"
 groups = ["default"]
-content_hash = "sha256:3d3e8c3a44d4bf8bf37629e8e2d28cb88d7a8cda7ee88cad1b915ea68c7d1b52"
+content_hash = "sha256:b98f083b5c59cdfcce1d61940aa2390a521c0ae3605d06513f8a5f488f13f1c6"
 
 [metadata.files]
 "anyio 3.6.2" = [
     {url = "https://files.pythonhosted.org/packages/77/2b/b4c0b7a3f3d61adb1a1e0b78f90a94e2b6162a043880704b7437ef297cad/anyio-3.6.2-py3-none-any.whl", hash = "sha256:fbbe32bd270d2a2ef3ed1c5d45041250284e31fc0a4df4a5a6071842051a51e3"},
     {url = "https://files.pythonhosted.org/packages/8b/94/6928d4345f2bc1beecbff03325cad43d320717f51ab74ab5a571324f4f5a/anyio-3.6.2.tar.gz", hash = "sha256:25ea0d673ae30af41a0c442f81cf3b38c7e79fdc7b60335a4c14e05eb0947421"},
+]
+"apscheduler 3.10.1" = [
+    {url = "https://files.pythonhosted.org/packages/d0/08/952d9570f4897dc2b30166fca5afd3a2cd19b3d408abdb470978484e8a09/APScheduler-3.10.1-py3-none-any.whl", hash = "sha256:e813ad5ada7aff36fb08cdda746b520531eaac7757832abc204868ba78e0c8f6"},
+    {url = "https://files.pythonhosted.org/packages/ea/ed/f1ad88e88208c24db80dcaae7a5a339bb283956984f8fa59933d2806413a/APScheduler-3.10.1.tar.gz", hash = "sha256:0293937d8f6051a0f493359440c1a1b93e882c57daf0197afeff0e727777b96e"},
 ]
 "arclet-alconna 1.7.2" = [
     {url = "https://files.pythonhosted.org/packages/c3/f9/2d7f490a460320a88647c5e948628394949cca2781a191e4f91aa8875fdb/arclet_alconna-1.7.2-py3-none-any.whl", hash = "sha256:ca4b4df8452563530043e35eb1e5869e4726636d38dc53166ec34bbfd37a56f6"},
@@ -385,9 +455,27 @@ content_hash = "sha256:3d3e8c3a44d4bf8bf37629e8e2d28cb88d7a8cda7ee88cad1b915ea68
     {url = "https://files.pythonhosted.org/packages/b0/ed/ad6307e2fc0d136f84764cdb490a3fd6148f0221d4465308ea0db6338d23/arclet_alconna_tools-0.6.0-py3-none-any.whl", hash = "sha256:bedbe7c35d41d0e9daba37cf5fbff01e8ac16625a6d48566aacd9f64a07eb5dc"},
     {url = "https://files.pythonhosted.org/packages/b9/1b/e27ada44b40f39d05a76ffc4a83e1fa28e3e52287262a03a3c79516c2f91/arclet-alconna-tools-0.6.0.tar.gz", hash = "sha256:1fcfc25b92fc70091095aecf2775f9192cbf60e605a4904e66f2c48d61e6dd73"},
 ]
-"arknights-toolkit 0.5.0" = [
-    {url = "https://files.pythonhosted.org/packages/18/a2/65d2532fc854e138a09431fabd2e54127694b886607a223e0940d29c0846/arknights_toolkit-0.5.0-py3-none-any.whl", hash = "sha256:d20141592913033abb88c3901af12fe5ea81cd5e497b872d6688c01cf33ce64f"},
-    {url = "https://files.pythonhosted.org/packages/e3/19/0d5cb01e565359ed9fa02690d2ba317d1fe8ca600e46f966a7ed9028572f/arknights-toolkit-0.5.0.tar.gz", hash = "sha256:987a18117daae66003e42b3de5441dd7b3462e3cfa50de52b1cbfaf99ff21044"},
+"arknights-toolkit 0.5.3" = [
+    {url = "https://files.pythonhosted.org/packages/04/10/196db902171b966ea9f9f75054ec62e8b799177b0a72d492ddb12c972d72/arknights_toolkit-0.5.3.tar.gz", hash = "sha256:88e72e3d367aec251c8fd91fd49cf9df342720ed1ba678faf27d0dff2aa6b3ed"},
+    {url = "https://files.pythonhosted.org/packages/ea/c1/990ebc65a2e324c598b7c929fdd42993e8c0c615b78275a639416c1499cf/arknights_toolkit-0.5.3-py3-none-any.whl", hash = "sha256:c4a1d3a9a429889f39d90193b10d3184aee2dab5303332d215a5088096ebf572"},
+]
+"backports-zoneinfo 0.2.1" = [
+    {url = "https://files.pythonhosted.org/packages/1a/ab/3e941e3fcf1b7d3ab3d0233194d99d6a0ed6b24f8f956fc81e47edc8c079/backports.zoneinfo-0.2.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:7b0a64cda4145548fed9efc10322770f929b944ce5cee6c0dfe0c87bf4c0c8c9"},
+    {url = "https://files.pythonhosted.org/packages/1c/96/baaca3ad1b06d97138d42a225e4d4d27cd1586b646740f771706cd2d812c/backports.zoneinfo-0.2.1-cp37-cp37m-win32.whl", hash = "sha256:e55b384612d93be96506932a786bbcde5a2db7a9e6a4bb4bffe8b733f5b9036b"},
+    {url = "https://files.pythonhosted.org/packages/28/d5/e2f3d6a52870045afd8c37b2681c47fd0b98679cd4851e349bfd7e19cfd7/backports.zoneinfo-0.2.1-cp36-cp36m-win_amd64.whl", hash = "sha256:8439c030a11780786a2002261569bdf362264f605dfa4d65090b64b05c9f79a7"},
+    {url = "https://files.pythonhosted.org/packages/33/1c/9357061860f5d3a09e1877aa4cf7c004c55eec40a1036761144ef24d8a1d/backports.zoneinfo-0.2.1-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:da6013fd84a690242c310d77ddb8441a559e9cb3d3d59ebac9aca1a57b2e18bc"},
+    {url = "https://files.pythonhosted.org/packages/4a/6d/eca004eeadcbf8bd64cc96feb9e355536147f0577420b44d80c7cac70767/backports.zoneinfo-0.2.1-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:8961c0f32cd0336fb8e8ead11a1f8cd99ec07145ec2931122faaac1c8f7fd987"},
+    {url = "https://files.pythonhosted.org/packages/4c/7e/ed8af95bed90eeccfb4a4fe6ec424bc7a79e1aa983e54dd1d9062d9fa20b/backports.zoneinfo-0.2.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:5c144945a7752ca544b4b78c8c41544cdfaf9786f25fe5ffb10e838e19a27570"},
+    {url = "https://files.pythonhosted.org/packages/6c/99/513f2c4dd41522eefc42feb86854f6cf3b1add9c175c14d90c070775e484/backports.zoneinfo-0.2.1-cp37-cp37m-win_amd64.whl", hash = "sha256:a76b38c52400b762e48131494ba26be363491ac4f9a04c1b7e92483d169f6582"},
+    {url = "https://files.pythonhosted.org/packages/74/a1/323f86a5ca5a559d452affb879512365a0473529398bfcf2d712a40ae088/backports.zoneinfo-0.2.1-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:f04e857b59d9d1ccc39ce2da1021d196e47234873820cbeaad210724b1ee28ac"},
+    {url = "https://files.pythonhosted.org/packages/78/cc/e27fd6493bbce8dbea7e6c1bc861fe3d3bc22c4f7c81f4c3befb8ff5bfaf/backports.zoneinfo-0.2.1-cp38-cp38-win_amd64.whl", hash = "sha256:4a0f800587060bf8880f954dbef70de6c11bbe59c673c3d818921f042f9954a6"},
+    {url = "https://files.pythonhosted.org/packages/ad/85/475e514c3140937cf435954f78dedea1861aeab7662d11de232bdaa90655/backports.zoneinfo-0.2.1.tar.gz", hash = "sha256:fadbfe37f74051d024037f223b8e001611eac868b5c5b06144ef4d8b799862f2"},
+    {url = "https://files.pythonhosted.org/packages/c0/34/5fdb0a3a28841d215c255be8fc60b8666257bb6632193c86fd04b63d4a31/backports.zoneinfo-0.2.1-cp38-cp38-win32.whl", hash = "sha256:1b13e654a55cd45672cb54ed12148cd33628f672548f373963b0bff67b217328"},
+    {url = "https://files.pythonhosted.org/packages/c1/8f/9b1b920a6a95652463143943fa3b8c000cb0b932ab463764a6f2a2416560/backports.zoneinfo-0.2.1-cp38-cp38-manylinux1_i686.whl", hash = "sha256:e81b76cace8eda1fca50e345242ba977f9be6ae3945af8d46326d776b4cf78d1"},
+    {url = "https://files.pythonhosted.org/packages/d1/04/8f2fed9c0cb9c88442fc8d6372cb0f5738fb05a65b45e2d371fbc8a15087/backports.zoneinfo-0.2.1-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:17746bd546106fa389c51dbea67c8b7c8f0d14b5526a579ca6ccf5ed72c526cf"},
+    {url = "https://files.pythonhosted.org/packages/d4/79/249bd3c4f794741f04f1e0ff33ad3cca9b2d1f4299b73f78d0d9bc9ec8dc/backports.zoneinfo-0.2.1-cp36-cp36m-win32.whl", hash = "sha256:e8236383a20872c0cdf5a62b554b27538db7fa1bbec52429d8d106effbaeca08"},
+    {url = "https://files.pythonhosted.org/packages/ef/9a/8de8f379d5b3961a517762cc051b366de3f7d4d3a2250120e7a71e25fab4/backports.zoneinfo-0.2.1-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:89a48c0d158a3cc3f654da4c2de1ceba85263fafb861b98b59040a5086259722"},
+    {url = "https://files.pythonhosted.org/packages/f9/04/33e910faffe91a5680d68a064162525779259ae5de3b0c0c5bd9c4e900e0/backports.zoneinfo-0.2.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:1c5742112073a563c81f786e77514969acb58649bcdf6cdf0b4ed31a348d4546"},
 ]
 "certifi 2023.5.7" = [
     {url = "https://files.pythonhosted.org/packages/93/71/752f7a4dd4c20d6b12341ed1732368546bc0ca9866139fe812f6009d9ac7/certifi-2023.5.7.tar.gz", hash = "sha256:0f0d56dc5a6ad56fd4ba36484d6cc34451e1c6548c61daad8c320169f91eddc7"},
@@ -758,13 +846,17 @@ content_hash = "sha256:3d3e8c3a44d4bf8bf37629e8e2d28cb88d7a8cda7ee88cad1b915ea68
     {url = "https://files.pythonhosted.org/packages/fc/5b/0a4205a1248fb152f596a03c971c6ef1585d0c98e56b6886dc35d084e366/multidict-6.0.4-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:7d18748f2d30f94f498e852c67d61261c643b349b9d2a581131725595c45ec6c"},
     {url = "https://files.pythonhosted.org/packages/fe/0c/8469202f8f4b0e65816f91c3febc4bda7316c995b59ecdf3b15c574f7a24/multidict-6.0.4-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cc8e1d0c705233c5dd0c5e6460fbad7827d5d36f310a0fadfd45cc3029762258"},
 ]
-"nepattern 0.5.6" = [
-    {url = "https://files.pythonhosted.org/packages/04/24/02d2086a50be474779a4930b49018c90811efcafb48fd8a2d417b6f8936e/nepattern-0.5.6.tar.gz", hash = "sha256:6c5100cea2a782f0d1780d0e5bc912b6e9151e18e168c463f01a38dc85752291"},
-    {url = "https://files.pythonhosted.org/packages/5f/16/4cdb3ce11bb7036c8be0287ebe20c1ddd564cdf66bea5645b4751d417dc2/nepattern-0.5.6-py3-none-any.whl", hash = "sha256:d266fdd8e58c83e2e9940ee86a89e0d0a30495b2ff862a67053528644f7b1c4a"},
+"nepattern 0.5.7" = [
+    {url = "https://files.pythonhosted.org/packages/25/65/9fd146bb003dae642512ebb70e4aa39fa0083ea87d252a36a45177f4116d/nepattern-0.5.7.tar.gz", hash = "sha256:ca766585eb15a63211ddad5a72b6ec5b642a804f03a1ff49b0e3a9df28f42c2e"},
+    {url = "https://files.pythonhosted.org/packages/fc/d6/c2c160c81b611f95ab36a1a6bc9c0162f422fa87c700473d88c956a58aaf/nepattern-0.5.7-py3-none-any.whl", hash = "sha256:25b026833b4159304e3c134cd124942867bdb37a2d0b5c657fef55be5a23bdd0"},
 ]
-"nonebot-plugin-alconna 0.4.1" = [
-    {url = "https://files.pythonhosted.org/packages/0a/fa/6d4a99427d7a3e0775a6cc815b9550a9cbd1af0d0fb411c3ef0ed70ab5c1/nonebot-plugin-alconna-0.4.1.tar.gz", hash = "sha256:da5a3cd879ab74451a0c6acc695de9179d324ea458bcbea9eda2d04ecc618166"},
-    {url = "https://files.pythonhosted.org/packages/eb/9f/135e55ebb00b88ceb52ed37b0c9b0e80a327cbd5796e8317a3f3e12d6c87/nonebot_plugin_alconna-0.4.1-py3-none-any.whl", hash = "sha256:c621f38c3ae4c86586f0404e54a0acb0c3250dbb872808aada61dddab939cb5b"},
+"nonebot-plugin-alconna 0.4.2" = [
+    {url = "https://files.pythonhosted.org/packages/40/b2/5b3cabc4fb4f35e707e083ea4880cbebeb691084dd9c10a6fb90265aaf14/nonebot_plugin_alconna-0.4.2-py3-none-any.whl", hash = "sha256:892fd00b193199f8d71b999c426e113a1dfb24a5274a1c4b3ed4d8c798542bb0"},
+    {url = "https://files.pythonhosted.org/packages/ec/8c/613a7321808dd81eeb4416beef90a12fb33ada89d8632646a85fdb3627a0/nonebot-plugin-alconna-0.4.2.tar.gz", hash = "sha256:6ee34fa2672d01df51f2e9ee4453b888ae02f50326d63688503a6c639d2b9810"},
+]
+"nonebot-plugin-apscheduler 0.2.0" = [
+    {url = "https://files.pythonhosted.org/packages/77/34/11d54a11bf7c6256bf61598e9f2b93df6bf4b1cc2b58f26ff1140539be81/nonebot-plugin-apscheduler-0.2.0.tar.gz", hash = "sha256:7b63e99a611b657533b48fcf1f8c6627c18c2eb3fa820a906cd4ec4666c0ceb0"},
+    {url = "https://files.pythonhosted.org/packages/b4/e0/08455966af13f69ee39b14ac345f77c5a7c5b2fbd671b0182a18e195173f/nonebot_plugin_apscheduler-0.2.0-py3-none-any.whl", hash = "sha256:9285ee84ca1cfa4db73c86cedb5911bbbd25a21ec0cd5f22447cd12f89e48fb4"},
 ]
 "nonebot-plugin-localstore 0.4.1" = [
     {url = "https://files.pythonhosted.org/packages/27/d4/c863b32d301825ae9fab59cfbe5c74817df4b19d7a3e150426c25c4d2f75/nonebot_plugin_localstore-0.4.1.tar.gz", hash = "sha256:9b6dcb98f6a4e48c5c80b2319acc2e1c424462261a210491d437f5b96abb5d67"},
@@ -934,6 +1026,18 @@ content_hash = "sha256:3d3e8c3a44d4bf8bf37629e8e2d28cb88d7a8cda7ee88cad1b915ea68
     {url = "https://files.pythonhosted.org/packages/31/06/1ef763af20d0572c032fa22882cfbfb005fba6e7300715a37840858c919e/python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
     {url = "https://files.pythonhosted.org/packages/44/2f/62ea1c8b593f4e093cc1a7768f0d46112107e790c3e478532329e434f00b/python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
 ]
+"pytz 2023.3" = [
+    {url = "https://files.pythonhosted.org/packages/5e/32/12032aa8c673ee16707a9b6cdda2b09c0089131f35af55d443b6a9c69c1d/pytz-2023.3.tar.gz", hash = "sha256:1d8ce29db189191fb55338ee6d0387d82ab59f3d00eac103412d64e0ebd0c588"},
+    {url = "https://files.pythonhosted.org/packages/7f/99/ad6bd37e748257dd70d6f85d916cafe79c0b0f5e2e95b11f7fbc82bf3110/pytz-2023.3-py2.py3-none-any.whl", hash = "sha256:a151b3abb88eda1d4e34a9814df37de2a80e301e68ba0fd856fb9b46bfbbbffb"},
+]
+"pytz-deprecation-shim 0.1.0.post0" = [
+    {url = "https://files.pythonhosted.org/packages/94/f0/909f94fea74759654390a3e1a9e4e185b6cd9aa810e533e3586f39da3097/pytz_deprecation_shim-0.1.0.post0.tar.gz", hash = "sha256:af097bae1b616dde5c5744441e2ddc69e74dfdcb0c263129610d85b87445a59d"},
+    {url = "https://files.pythonhosted.org/packages/eb/73/3eaab547ca809754e67e06871cff0fc962bafd4b604e15f31896a0f94431/pytz_deprecation_shim-0.1.0.post0-py2.py3-none-any.whl", hash = "sha256:8314c9692a636c8eb3bda879b9f119e350e93223ae83e70e80c31675a0fdc1a6"},
+]
+"setuptools 67.7.2" = [
+    {url = "https://files.pythonhosted.org/packages/2f/8c/f336a966d4097c7cef6fc699b2ecb83b5fb63fd698198c1b5c7905a74f0f/setuptools-67.7.2-py3-none-any.whl", hash = "sha256:23aaf86b85ca52ceb801d32703f12d77517b2556af839621c641fca11287952b"},
+    {url = "https://files.pythonhosted.org/packages/fd/53/e5d7ae40d03e4ed20b7cba317cf9c0c97097c8debb39f9d72d182a6578a2/setuptools-67.7.2.tar.gz", hash = "sha256:f104fa03692a2602fa0fec6c6a9e63b6c8a968de13e17c026957dd1f53d80990"},
+]
 "six 1.16.0" = [
     {url = "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
     {url = "https://files.pythonhosted.org/packages/d9/5a/e7c31adbe875f2abbb91bd84cf2dc52d792b5a01506781dbcf25c91daf11/six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
@@ -993,6 +1097,14 @@ content_hash = "sha256:3d3e8c3a44d4bf8bf37629e8e2d28cb88d7a8cda7ee88cad1b915ea68
 "typing-extensions 4.5.0" = [
     {url = "https://files.pythonhosted.org/packages/31/25/5abcd82372d3d4a3932e1fa8c3dbf9efac10cc7c0d16e78467460571b404/typing_extensions-4.5.0-py3-none-any.whl", hash = "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4"},
     {url = "https://files.pythonhosted.org/packages/d3/20/06270dac7316220643c32ae61694e451c98f8caf4c8eab3aa80a2bedf0df/typing_extensions-4.5.0.tar.gz", hash = "sha256:5cb5f4a79139d699607b3ef622a1dedafa84e115ab0024e0d9c044a9479ca7cb"},
+]
+"tzdata 2023.3" = [
+    {url = "https://files.pythonhosted.org/packages/70/e5/81f99b9fced59624562ab62a33df639a11b26c582be78864b339dafa420d/tzdata-2023.3.tar.gz", hash = "sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a"},
+    {url = "https://files.pythonhosted.org/packages/d5/fb/a79efcab32b8a1f1ddca7f35109a50e4a80d42ac1c9187ab46522b2407d7/tzdata-2023.3-py2.py3-none-any.whl", hash = "sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda"},
+]
+"tzlocal 4.3" = [
+    {url = "https://files.pythonhosted.org/packages/39/97/b15b711a10d0774390404bec9712b2647b0b53a4da50a08acf7d7e51e284/tzlocal-4.3.tar.gz", hash = "sha256:3f21d09e1b2aa9f2dacca12da240ca37de3ba5237a93addfd6d593afe9073355"},
+    {url = "https://files.pythonhosted.org/packages/d4/46/e8002faae3d1df7d7a0a3aa0cb4b2ccd805c3a71fb507b06446012b28790/tzlocal-4.3-py3-none-any.whl", hash = "sha256:b44c4388f3d34f25862cfbb387578a4d70fec417649da694a132f628a23367e2"},
 ]
 "win32-setctime 1.1.0" = [
     {url = "https://files.pythonhosted.org/packages/0a/e6/a7d828fef907843b2a5773ebff47fb79ac0c1c88d60c0ca9530ee941e248/win32_setctime-1.1.0-py3-none-any.whl", hash = "sha256:231db239e959c2fe7eb1d7dc129f11172354f98361c4fa2d6d2d7e278baa8aad"},

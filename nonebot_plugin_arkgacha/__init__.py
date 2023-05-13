@@ -1,18 +1,24 @@
+import asyncio
 import json
 from dataclasses import asdict
-from nonebot import get_driver, require, on_fullmatch
+from pathlib import Path
+import sys
+
+from arclet.alconna import Alconna, Args, CommandMeta
+from arknights_toolkit import need_init
+from arknights_toolkit.gacha import ArknightsGacha, GachaUser
+from httpx import AsyncClient, ConnectError, TimeoutException
+from nonebot import get_driver, on_fullmatch, require
 from nonebot.adapters import Event
 from nonebot.plugin import PluginMetadata
-from arclet.alconna import Alconna, Args, CommandMeta
-from arknights_toolkit.gacha import ArknightsGacha, GachaUser
 
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_saa")
 
-from nonebot_plugin_alconna import on_alconna, AlconnaMatch, Match
+from nonebot_plugin_alconna import AlconnaMatch, Match, on_alconna
 from nonebot_plugin_localstore import get_cache_file, get_data_file
-from nonebot_plugin_saa import MessageFactory, Image
+from nonebot_plugin_saa import Image, MessageFactory, Text
 
 from .config import Config
 
@@ -59,6 +65,19 @@ help_regex = on_fullmatch("方舟抽卡帮助", priority=16, block=True)
 update_regex = on_fullmatch("方舟卡池更新", priority=16, block=True)
 
 
+@driver.on_startup
+async def _():
+    if need_init():
+        process = await asyncio.create_subprocess_shell(
+            f"{Path(sys.executable).parent / 'arkkit'} init -SIMG",
+        )
+        try:
+            await process.communicate()
+        except Exception:
+            process.kill()
+            await process.communicate()
+
+
 @driver.on_shutdown
 async def _():
     with user_cache_file.open("w+", encoding="utf-8") as _f:
@@ -79,13 +98,23 @@ async def _():
 @update_regex.handle()
 async def _():
     if new := (await gacha.update()):
-        await update_regex.finish(
+        text = (
             f"更新成功，卡池已更新至{new.title}\n"
             "六星角色：\n" +
             "\n".join(f"{i.name} {'【限定】' if i.limit else '【常驻】'}" for i in new.six_chars) +
             "\n五星角色：\n" +
             "\n".join(f"{i.name} {'【限定】' if i.limit else '【常驻】'}" for i in new.five_chars)
         )
+        if config.arkgacha_pure_text:
+            await update_regex.send(text)
+        else:
+            try:
+                async with AsyncClient() as client:
+                    data = await client.get(new.pool)
+                await MessageFactory([Text(text), Image(data.content)]).send()
+            except (TimeoutException, ConnectError, RuntimeError):
+                await update_regex.send(text)
+        await update_regex.finish()
     else:
         await update_regex.finish("卡池已是最新")
 

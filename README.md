@@ -27,17 +27,18 @@ _✨ 明日方舟抽卡模拟器 ✨_
 ## 安装
 
 ```bash
-pip install nonebot-plugin-arkgacha
+$ pip install nonebot-plugin-arkgacha
 ```
 
 ```bash
-nb plugin install nonebot-plugin-arkgacha
+$ nb plugin install nonebot-plugin-arkgacha
 ```
 
 **在使用该插件之前，需要先初始化资源**
 
+命令行输入：
 ```bash
-arkkit init
+$ arkkit init -SIMG
 ```
 
 ## 配置
@@ -65,4 +66,4 @@ arkkit init
 
 ## 注意事项
 1. `方舟抽卡` 不需要图片资源, 可在不经过 `arkkit init` 的情况下使用
-2. `方舟十连` 需要图片资源, 需要先执行 `arkkit init` 初始化资源，否则会出现错误
+2. `方舟十连` 需要图片资源, 需要先在命令行中执行 `arkkit init -SIMG` 初始化资源，否则会出现错误
