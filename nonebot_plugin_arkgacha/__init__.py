@@ -88,7 +88,7 @@ async def _():
 @driver.on_shutdown
 async def _():
     with user_cache_file.open("w+", encoding="utf-8") as _f:
-        json.dump(userdata, _f, ensure_ascii=False)
+        json.dump(userdata, _f, ensure_ascii=False, indent=2)
 
 
 @help_regex.handle()
