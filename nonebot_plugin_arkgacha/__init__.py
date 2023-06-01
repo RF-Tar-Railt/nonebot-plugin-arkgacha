@@ -31,10 +31,19 @@ config = Config.parse_obj(global_config)
 __plugin_meta__ = PluginMetadata(
     name="明日方舟抽卡模拟",
     description="明模拟日方舟抽卡功能，支持模拟十连",
-    usage="方舟抽卡 / 方舟十连",
+    usage="""\
+方舟抽卡 [count = 10]
+方舟十连
+方舟抽卡帮助
+方舟卡池更新    
+""",
+    homepage="https://github.com/RF-Tar-Railt/nonebot-plugin-arkgacha",
+    type="application",
+    config=Config,
     extra={
         "author": "RF-Tar-Railt",
-        'priority': 16,
+        'priority': 3,
+        "version": "0.3.0",
     }
 )
 
