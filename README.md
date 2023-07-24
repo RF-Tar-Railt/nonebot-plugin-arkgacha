@@ -38,7 +38,13 @@ $ nb plugin install nonebot-plugin-arkgacha
 
 命令行输入：
 ```bash
-$ arkkit init -SIMG
+nb arkgacha init
+```
+
+或
+
+```bash
+arkkit init -SIMG
 ```
 
 ## 配置
@@ -49,8 +55,8 @@ $ arkkit init -SIMG
 - ARKGACHA_AUTO_UPDATE: 是否自动更新，默认为 True
 
 ## 注意事项
-1. `方舟抽卡` 不需要图片资源, 可在不经过 `arkkit init` 的情况下使用
-2. `方舟十连` 需要图片资源, 需要先在命令行中执行 `arkkit init -SIMG` 初始化资源，否则会出现错误
+1. `方舟抽卡` 不需要图片资源, 可在不经过 `nb arkgacha init` 或 `arkkit init` 的情况下使用
+2. `方舟十连` 需要图片资源, 需要先在命令行中执行 `nb arkgacha init` 或 `arkkit init -SIMG` 初始化资源，否则会出现错误
 3. 若配置，每天 16 点将自动更新卡池资源
 4. 如果获取资源时出现网络错误，请检查代理设置，或尝试访问 PRTS
 

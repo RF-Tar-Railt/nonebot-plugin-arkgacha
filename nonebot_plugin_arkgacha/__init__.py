@@ -27,7 +27,7 @@ from .config import Config
 driver = get_driver()
 global_config = driver.config
 config = Config.parse_obj(global_config)
-
+__version__ = "0.4.0"
 __plugin_meta__ = PluginMetadata(
     name="明日方舟抽卡模拟",
     description="明模拟日方舟抽卡功能，支持模拟十连",
@@ -43,7 +43,7 @@ __plugin_meta__ = PluginMetadata(
     extra={
         "author": "RF-Tar-Railt",
         'priority': 3,
-        "version": "0.3.0",
+        "version": __version__,
     }
 )
 
