@@ -1,14 +1,12 @@
 import asyncio
 import json
 from dataclasses import asdict
-from pathlib import Path
-import sys
 
 from arclet.alconna import Alconna, Args, CommandMeta
 from arknights_toolkit import need_init
 from arknights_toolkit.gacha import ArknightsGacha, GachaUser
 from httpx import AsyncClient, ConnectError, TimeoutException
-from nonebot import get_driver, on_fullmatch, require
+from nonebot import get_driver, on_fullmatch, require, logger
 from nonebot.adapters import Event
 from nonebot.plugin import PluginMetadata
 
@@ -27,7 +25,7 @@ from .config import Config
 driver = get_driver()
 global_config = driver.config
 config = Config.parse_obj(global_config)
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 __plugin_meta__ = PluginMetadata(
     name="明日方舟抽卡模拟",
     description="明模拟日方舟抽卡功能，支持模拟十连",
@@ -84,13 +82,12 @@ if config.arkgacha_auto_update:
 @driver.on_startup
 async def _():
     if need_init():
-        process = await asyncio.create_subprocess_shell(
-            f"{Path(sys.executable).parent / 'arkkit'} init -SIMG",
-        )
+        process = await asyncio.create_subprocess_shell("nb arkgacha init")
         try:
             await process.communicate()
-        except Exception:
+        except Exception as e:
             process.kill()
+            logger.error(f"初始化明日方舟抽卡模块失败: {e!r}")
             await process.communicate()
 
 

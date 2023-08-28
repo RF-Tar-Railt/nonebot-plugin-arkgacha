@@ -43,7 +43,7 @@ class Init(BasePlugin):
             asyncio.run(fetch(select, result.query("init.cover.value")))
             from arknights_toolkit import __version__
 
-            base_path = Path(__file__).parent.parent.parent / "resource"
+            base_path = Path(__file__).parent.parent / "arknights_toolkit" / "resource"
             with (base_path / "ops_initialized").open("w+", encoding="utf-8") as _f:
                 _f.write(__version__)
             return False
