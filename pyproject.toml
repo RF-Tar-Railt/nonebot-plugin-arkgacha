@@ -1,17 +1,16 @@
 [project]
 name = "nonebot-plugin-arkgacha"
-version = "0.4.0"
+version = "0.5.0"
 description = "Plugin for Arknights gacha, support multi platform"
 authors = [
     {name = "RF-Tar-Railt", email = "rf_tar_railt@qq.com"},
 ]
 dependencies = [
-    "nonebot2>=2.0.0",
-    "nonebot-plugin-alconna>=0.7.0",
-    "nonebot-plugin-send-anything-anywhere>=0.2.4",
-    "arknights-toolkit<0.6.0, >=0.5.8",
-    "nonebot-plugin-localstore>=0.4.1",
-    "nonebot-plugin-apscheduler>=0.2.0",
+    "nonebot2>=2.1.0",
+    "nonebot-plugin-alconna>=0.33.3",
+    "arknights-toolkit>=0.6.2",
+    "nonebot-plugin-localstore>=0.5.1",
+    "nonebot-plugin-apscheduler>=0.3.0",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
@@ -20,11 +19,17 @@ license = {text = "MIT"}
 [project.entry-points.nb_scripts]
 arkgacha = "nonebot_plugin_arkgacha.__main__:main"
 
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
 [tool.pdm]
 
 [tool.pdm.build]
 includes = ["nonebot_plugin_arkgacha"]
+[tool.pdm.dev-dependencies]
+dev = [
+    "nonebot-adapter-qq>=1.0.1",
+    "nonebot2[httpx,websockets]>=2.1.2",
+]
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.nonebot]

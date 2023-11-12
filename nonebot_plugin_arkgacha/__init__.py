@@ -1,23 +1,22 @@
-import asyncio
 import json
 from dataclasses import asdict
+from pathlib import Path
 
 from arclet.alconna import Alconna, Args, CommandMeta
-from arknights_toolkit import need_init
+import arknights_toolkit as arkkit
+from arknights_toolkit.update.main import fetch
 from arknights_toolkit.gacha import ArknightsGacha, GachaUser
-from httpx import AsyncClient, ConnectError, TimeoutException
+from nonebot.exception import ActionFailed, NetworkError
 from nonebot import get_driver, on_fullmatch, require, logger
 from nonebot.adapters import Event
 from nonebot.plugin import PluginMetadata
 
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
-require("nonebot_plugin_saa")
 require("nonebot_plugin_apscheduler")
 
-from nonebot_plugin_alconna import AlconnaMatch, Match, on_alconna
+from nonebot_plugin_alconna import Match, UniMessage, SerializeFailed, on_alconna
 from nonebot_plugin_localstore import get_cache_file, get_data_file
-from nonebot_plugin_saa import Image, MessageFactory, Text
 from nonebot_plugin_apscheduler import scheduler
 
 from .config import Config
@@ -25,7 +24,7 @@ from .config import Config
 driver = get_driver()
 global_config = driver.config
 config = Config.parse_obj(global_config)
-__version__ = "0.4.1"
+__version__ = "0.5.0"
 __plugin_meta__ = PluginMetadata(
     name="明日方舟抽卡模拟",
     description="明模拟日方舟抽卡功能，支持模拟十连",
@@ -46,7 +45,10 @@ __plugin_meta__ = PluginMetadata(
 )
 
 
-gacha = ArknightsGacha(config.arkgacha_pool_file or get_data_file("arkgacha", "pool.json"))
+gacha = ArknightsGacha(
+    config.arkgacha_pool_file or get_data_file("arkgacha", "pool.json"),
+    proxy=config.arkgacha_proxy
+)
 user_cache_file = get_cache_file("arkgacha", "user.json")
 if not user_cache_file.exists():
     userdata = {}
@@ -65,12 +67,12 @@ gacha_regex = on_alconna(
         )
     ),
     auto_send_output=True,
-    comp_config={'timeout': 30},
+    skip_for_unmatch=False,
     priority=15,
     block=True
 )
 simulate_regex = on_fullmatch("方舟十连", priority=16, block=True)
-help_regex = on_fullmatch("方舟抽卡帮助", priority=16, block=True)
+help_regex = on_fullmatch("方舟抽卡帮助", priority=10, block=True)
 update_regex = on_fullmatch("方舟卡池更新", priority=16, block=True)
 
 if config.arkgacha_auto_update:
@@ -81,14 +83,12 @@ if config.arkgacha_auto_update:
 
 @driver.on_startup
 async def _():
-    if need_init():
-        process = await asyncio.create_subprocess_shell("nb arkgacha init")
-        try:
-            await process.communicate()
-        except Exception as e:
-            process.kill()
-            logger.error(f"初始化明日方舟抽卡模块失败: {e!r}")
-            await process.communicate()
+    if arkkit.need_init():
+        await fetch(2, True, proxy=config.arkgacha_proxy)
+        base_path = Path(arkkit.__file__).parent / "resource"
+        with (base_path / "ops_initialized").open("w+", encoding="utf-8") as _f:
+            _f.write(arkkit.__version__)
+        logger.success("初始化明日方舟抽卡模块完成")
 
 
 @driver.on_shutdown
@@ -122,10 +122,8 @@ async def _():
             await update_regex.send(text)
         else:
             try:
-                async with AsyncClient() as client:
-                    data = await client.get(new.pool)
-                await MessageFactory([Text(text), Image(data.content)]).send()
-            except (TimeoutException, ConnectError, RuntimeError):
+                await UniMessage.image(url=new.pool).send()
+            except (ActionFailed, NetworkError, SerializeFailed):
                 await update_regex.send(text)
         await update_regex.finish()
     else:
@@ -133,7 +131,7 @@ async def _():
 
 
 @gacha_regex.handle()
-async def _(event: Event, count: Match[int] = AlconnaMatch("count")):
+async def _(event: Event, count: Match[int]):
     session = event.get_user_id()
     if session not in userdata:
         user = GachaUser()
@@ -167,8 +165,8 @@ async def _(event: Event, count: Match[int] = AlconnaMatch("count")):
     else:
         img = gacha.create_image(user, data, count, True)
         try:
-            await MessageFactory(Image(img)).send()
-        except RuntimeError:
+            await UniMessage.image(raw=img, mimetype="image/jpeg").send()
+        except (ActionFailed, NetworkError, SerializeFailed):
             await gacha_regex.send(text)
     userdata[session] = asdict(user)
     await gacha_regex.finish()
@@ -185,10 +183,10 @@ async def _(event: Event):
     else:
         user = GachaUser(**userdata[session])
     res = gacha.gacha(user, 10)
-    img = await simulate_image(res[0])
+    img = await simulate_image(res[0], proxy=config.arkgacha_proxy)
     try:
-        await MessageFactory(Image(img)).send()
-    except RuntimeError:
+        await UniMessage.image(raw=img, mimetype="image/jpeg").send()
+    except (ActionFailed, NetworkError, SerializeFailed):
         await simulate_regex.send("图片发送失败")
     userdata[session] = asdict(user)
     await gacha_regex.finish()

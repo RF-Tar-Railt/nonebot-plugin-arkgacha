@@ -22,7 +22,7 @@ _✨ 明日方舟抽卡模拟器 ✨_
 
 该插件提供了模拟明日方舟抽卡的功能，包括无头形式的抽卡模拟与模拟十连
 
-通过使用 [`saa`](https://github.com/felinae98/nonebot-plugin-send-anything-anywhere) 插件适配多平台
+通过使用 [`plugin-alconna`](https://github.com/nonebot/plugin-alconna) 插件适配多平台
 
 ## 安装
 
@@ -49,6 +49,7 @@ arkkit init -SIMG
 
 ## 配置
 
+- ARKGACHA_PROXY: 代理配置，默认为空
 - ARKGACHA_POOL_FILE: 抽卡池文件路径, 不填则使用 [`localstore`](https://github.com/nonebot/plugin-localstore) 保存抽卡池
 - ARKGACHA_MAX: 抽卡最大次数, 默认为 300
 - ARKGACHA_PURE_TEXT: 是否使用纯文本, 默认为 False (十连模拟必须使用图片)

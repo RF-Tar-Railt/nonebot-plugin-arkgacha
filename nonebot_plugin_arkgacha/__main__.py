@@ -19,7 +19,7 @@ from arknights_toolkit.update.gacha import generate as generate_gacha
 from arknights_toolkit.update.main import fetch
 from clilte import BasePlugin, CommandLine, PluginMetadata
 
-from . import gacha, __version__
+from . import gacha, __version__, config
 
 
 class Init(BasePlugin):
@@ -40,12 +40,12 @@ class Init(BasePlugin):
     def dispatch(self, result: Arparma) -> bool | None:
         if result.find("init"):
             select = 2
-            asyncio.run(fetch(select, result.query("init.cover.value")))
-            from arknights_toolkit import __version__
+            asyncio.run(fetch(select, result.query("init.cover.value"), proxy=config.arkgacha_proxy))
+            import arknights_toolkit
 
-            base_path = Path(__file__).parent.parent / "arknights_toolkit" / "resource"
+            base_path = Path(arknights_toolkit.__file__).parent / "resource"
             with (base_path / "ops_initialized").open("w+", encoding="utf-8") as _f:
-                _f.write(__version__)
+                _f.write(arknights_toolkit.__version__)
             return False
         return True
 
@@ -68,7 +68,7 @@ class Update(BasePlugin):
     def dispatch(self, result: Arparma) -> bool | None:
         if result.find("path"):
             asyncio.run(
-                generate_gacha(Path(result["path"]).absolute())
+                generate_gacha(Path(result["path"]).absolute(), proxy=config.arkgacha_proxy)
             )
             return False
         return True
