@@ -9,3 +9,4 @@ class Config(BaseModel, extra=Extra.ignore):
     arkgacha_pool_file: str = ""
     arkgacha_pure_text: bool = False
     arkgacha_auto_update: bool = True
+    arkgacha_reply_sender: bool = False

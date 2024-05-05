@@ -54,6 +54,7 @@ arkkit init -SIMG
 - ARKGACHA_MAX: 抽卡最大次数, 默认为 300
 - ARKGACHA_PURE_TEXT: 是否使用纯文本, 默认为 False (十连模拟必须使用图片)
 - ARKGACHA_AUTO_UPDATE: 是否自动更新，默认为 True
+- ARKGACHA_REPLY_SENDER: 是否回复发送者，默认为 False
 
 ## 注意事项
 1. `方舟抽卡` 不需要图片资源, 可在不经过 `nb arkgacha init` 或 `arkkit init` 的情况下使用

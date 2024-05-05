@@ -15,7 +15,7 @@ require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
 require("nonebot_plugin_apscheduler")
 
-from nonebot_plugin_alconna import Match, UniMessage, SerializeFailed, on_alconna
+from nonebot_plugin_alconna import Match, UniMessage, SerializeFailed, on_alconna, MsgTarget, SupportScope
 from nonebot_plugin_localstore import get_cache_file, get_data_file
 from nonebot_plugin_apscheduler import scheduler
 
@@ -23,7 +23,7 @@ from .config import Config
 
 driver = get_driver()
 _config = get_plugin_config(Config)
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 __plugin_meta__ = PluginMetadata(
     name="明日方舟抽卡模拟",
     description="明模拟日方舟抽卡功能，支持模拟十连",
@@ -56,7 +56,7 @@ else:
     with user_cache_file.open("r", encoding="utf-8") as f:
         userdata = json.load(f)
 
-gacha_regex = on_alconna(
+gacha_cmd = on_alconna(
     Alconna(
         "方舟抽卡", Args["count", int, 10],
         meta=CommandMeta(
@@ -130,8 +130,8 @@ async def _():
         await update_regex.finish("卡池已是最新")
 
 
-@gacha_regex.handle()
-async def _(event: Event, count: Match[int]):
+@gacha_cmd.handle()
+async def _(event: Event, count: Match[int], target: MsgTarget):
     session = event.get_user_id()
     if session not in userdata:
         user = GachaUser()
@@ -160,20 +160,23 @@ async def _(event: Event, count: Match[int]):
         "\n四星角色：\n" +
         f"共{four_count}个四星"
     )
+    reply_to = _config.arkgacha_reply_sender
+    if target.scope is SupportScope.qq_api and not target.parent_id:
+        reply_to = False
     if _config.arkgacha_pure_text:
-        await gacha_regex.send(text)
+        await UniMessage.text(text).send(reply_to=reply_to)
     else:
         img = gacha.create_image(user, data, _count, True)
         try:
-            await UniMessage.image(raw=img, mimetype="image/jpeg").send()
+            await UniMessage.image(raw=img, mimetype="image/jpeg").send(reply_to=reply_to)
         except (ActionFailed, NetworkError, SerializeFailed):
-            await gacha_regex.send(text)
+            await UniMessage.text(text).send(reply_to=reply_to)
     userdata[session] = asdict(user)
-    await gacha_regex.finish()
+    await gacha_cmd.finish()
 
 
 @simulate_regex.handle()
-async def _(event: Event):
+async def _(event: Event, target: MsgTarget):
     from arknights_toolkit.gacha.simulate import simulate_image
 
     session = event.get_user_id()
@@ -184,9 +187,12 @@ async def _(event: Event):
         user = GachaUser(**userdata[session])
     res = gacha.gacha(user, 10)
     img = await simulate_image(res[0], proxy=_config.arkgacha_proxy)
+    reply_to = _config.arkgacha_reply_sender
+    if target.scope is SupportScope.qq_api and not target.parent_id:
+        reply_to = False
     try:
-        await UniMessage.image(raw=img, mimetype="image/jpeg").send()
+        await UniMessage.image(raw=img, mimetype="image/jpeg").send(reply_to=reply_to)
     except (ActionFailed, NetworkError, SerializeFailed):
-        await simulate_regex.send("图片发送失败")
+        await UniMessage.text("图片发送失败").send(reply_to=reply_to)
     userdata[session] = asdict(user)
-    await gacha_regex.finish()
+    await gacha_cmd.finish()
