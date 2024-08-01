@@ -18,6 +18,7 @@ from arclet.alconna.argv import __argv_type__
 from arknights_toolkit.update.gacha import generate as generate_gacha
 from arknights_toolkit.update.main import fetch
 from clilte import BasePlugin, CommandLine, PluginMetadata
+from nonebot import logger
 
 from . import gacha, __version__, _config
 
@@ -49,6 +50,10 @@ class Init(BasePlugin):
             return False
         return True
 
+    @classmethod
+    def supply_options(cls):
+        return
+
 
 class Update(BasePlugin):
     def init(self) -> Alconna | str:
@@ -72,6 +77,42 @@ class Update(BasePlugin):
             )
             return False
         return True
+
+    @classmethod
+    def supply_options(cls):
+        return
+
+
+class Clear(BasePlugin):
+    def init(self) -> Alconna | str:
+        alc = Alconna(
+            "clear",
+            meta=CommandMeta("清除干员数据与图片资源"),
+        )
+        alc.help_text = "清除干员数据与图片资源"
+        return alc
+
+    def meta(self) -> PluginMetadata:
+        return PluginMetadata("clear", "0.1.0", "clear", ["clear"], ["RF-Tar-Railt"], 10)
+
+    def dispatch(self, result: Arparma) -> bool | None:
+        if result.find("clear"):
+            base_path = Path(__file__).parent.parent.parent / "resource"
+            if (base_path / "info.json").exists():
+                (base_path / "info.json").unlink()
+                logger.info("info.json has been removed")
+            for img in (base_path / "operators").iterdir():
+                if not img.stem.startswith("profile"):
+                    img.unlink(missing_ok=True)
+                    logger.info(f"{img.name} has been removed")
+            (base_path / "ops_initialized").unlink(missing_ok=True)
+            logger.success("resource has been cleared")
+            return False
+        return True
+
+    @classmethod
+    def supply_options(cls) -> list[Option] | None:
+        return
 
 
 arkkit = CommandLine(
