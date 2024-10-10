@@ -23,7 +23,7 @@ from .config import Config
 
 driver = get_driver()
 _config = get_plugin_config(Config)
-__version__ = "0.8.0"
+__version__ = "0.8.1"
 __plugin_meta__ = PluginMetadata(
     name="明日方舟抽卡模拟",
     description="明模拟日方舟抽卡功能，支持模拟十连",
