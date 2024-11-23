@@ -14,7 +14,6 @@ from arclet.alconna import (
     set_default_argv_type,
     store_true,
 )
-from arclet.alconna.argv import __argv_type__
 from arknights_toolkit.update.gacha import generate as generate_gacha
 from arknights_toolkit.update.main import fetch
 from clilte import BasePlugin, CommandLine, PluginMetadata
@@ -115,18 +114,14 @@ class Clear(BasePlugin):
         return
 
 
-arkkit = CommandLine(
-    "NB CLI plugin for nonebot-plugin-arkgacha",
-    __version__,
-    rich=True,
-    _name="arkkit",
-    load_preset=True,
-)
-arkkit.add(Init, Update)
-
-
 def main(*args):
-    old_argv_type = __argv_type__.get()
     set_default_argv_type(Argv)
-    arkkit.main(*(["arkkit"] + list(args or sys.argv[1:])))
-    set_default_argv_type(old_argv_type)
+    arkkit = CommandLine(
+        "NB CLI plugin for nonebot-plugin-arkgacha",
+        __version__,
+        rich=True,
+        _name="nb arkgacha",
+        load_preset=True,
+    )
+    arkkit.add(Init, Update)
+    arkkit.main(*(["nb arkgacha"] + list(args or sys.argv[1:])))
